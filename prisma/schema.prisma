@@ -20,7 +20,7 @@ model Users {
   namaBelakang String
   username    String
   password    String
-  balance     Float
+  balance     Int
   email       String
   role        String
   Beli        Beli[]
@@ -34,8 +34,8 @@ model Movies {
   description String
   director    String
   releaseYear Int
-  genre       String
-  price       Float
+  genre       String[]
+  price       Int
   duration    Int
   video       String
   coverImage  String?
@@ -65,7 +65,7 @@ model Wishlist {
 model Feedback {
   id_user  Int
   id_film  Int
-  rating   Int
+  rating   Float
   comment  String
   user     Users @relation(fields: [id_user], references: [id])
   movie    Movies @relation(fields: [id_film], references: [id])

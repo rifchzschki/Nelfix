@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@nestjs/mapped-types": "*",
     "@prisma/client": "^5.18.0"
   },
   "devDependencies": {

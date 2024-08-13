@@ -8,10 +8,7 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { ResponseDto } from './dto/response.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { contains } from 'class-validator';
-import { Console } from 'console';
 import { Movies } from '@prisma/client';
-import { tr } from '@faker-js/faker';
 
 @Injectable()
 export class MoviesService {
@@ -59,7 +56,7 @@ export class MoviesService {
     };
   }
 
-  async findOne(id: number) {
+  public async findOne(id: number) {
     if (isNaN(id) || id <= 0) {
       throw new BadRequestException('Invalid ID');
     }

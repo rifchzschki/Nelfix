@@ -3,13 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Query,
-  NotFoundException,
-  BadRequestException,
-  InternalServerErrorException,
+  Put,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
@@ -17,7 +14,6 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { ResponseDto } from './dto/response.dto';
 import { Movies } from '@prisma/client';
-import { response } from 'express';
 
 @Controller('films')
 export class MoviesController {
@@ -68,66 +64,66 @@ export class MoviesController {
         data: await this.moviesService.findAll(),
       };
     }
-    try{
+    try {
       return this.moviesService.search({ title, director });
-    }catch(error){
-      return{
-        status: "error",
-        message: error.message
-      }
+    } catch (error) {
+      return {
+        status: 'error',
+        message: error.message,
+      };
     }
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<ResponseDto<Movies>>{
-    try{
+  async findOne(@Param('id') id: string): Promise<ResponseDto<Movies>> {
+    try {
       return {
-        status : "success",
+        status: 'success',
         message: `Movie with id: ${id} is found`,
-        data : await this.moviesService.findOne(+id)
-      }
+        data: await this.moviesService.findOne(+id),
+      };
     } catch (error) {
-        return {
-          status : "error",
-          message : error.message
-        }
+      return {
+        status: 'error',
+        message: error.message,
+      };
     }
   }
 
-  @Patch(':id')
+  @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updateMovieDto: UpdateMovieDto,
-  ) : Promise<ResponseDto<Movies>>{
-    try{
-      return{
-        status: "success",
-        message: `Movie with id: ${id} successfull updated`,
-        data: await this.moviesService.update(+id, updateMovieDto)
-      }
-    }catch(error){
+  ): Promise<ResponseDto<Movies>> {
+    try {
+      return {
+        status: 'success',
+        message: `Movie with id: ${id} has been updated`,
+        data: await this.moviesService.update(+id, updateMovieDto),
+      };
+    } catch (error) {
       console.error('Error finding movie:', error);
-      return{
-        status: "error",
-        message: error.code === 'P2025' ? "Movies not found" : error.message
-      }
+      return {
+        status: 'error',
+        message: error.code === 'P2025' ? 'Movies not found' : error.message,
+      };
     }
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<ResponseDto<Movies>> {
-    try{
+    try {
       return {
-        status: "success",
+        status: 'success',
         message: `Movies with id: ${id} has been deleted`,
-        data: await this.moviesService.remove(+id)
-      }
-    }catch(error){
+        data: await this.moviesService.remove(+id),
+      };
+    } catch (error) {
       console.error('Error finding movie:', error);
-      return{
-        status: "error",
-        message: error.code === 'P2025' ? "Movies not found" : error.message
-      }
+      return {
+        status: 'error',
+        message: error.code === 'P2025' ? 'Movies not found' : error.message,
+      };
     }
   }
 }
