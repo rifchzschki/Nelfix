@@ -20,8 +20,21 @@ export class MoviesService {
     });
   }
 
-  async findAll() {
-    return this.prisma.movies.findMany();
+  async findAll(params: { page?: number; limit?: number }): Promise<Movies[]> {
+    const { page, limit } = params;
+    if (!page && !limit) {
+      return this.prisma.movies.findMany();
+    }
+    const skip = (page - 1) * limit;
+    const [data, total] = await Promise.all([
+      this.prisma.movies.findMany({
+        skip,
+        take: limit,
+      }),
+      this.prisma.movies.count(),
+    ]);
+
+    return data;
   }
 
   async search(params: {

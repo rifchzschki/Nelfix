@@ -1,4 +1,4 @@
 Todo:
 1. Revisi database dan lakukan fetch (genre itu list of string bukan string)
 2. Implementasikan metode penyimpanan video dan cover image menggunakan bucket (cloudflare r2)
-3. 
+3. Belum memberi batasan pada pengguna role user ataupun admin

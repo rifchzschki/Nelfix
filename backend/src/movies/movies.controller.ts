@@ -57,11 +57,12 @@ export class MoviesController {
     @Query('title') title?: string,
     @Query('director') director?: string,
   ): Promise<ResponseDto<Movies[]>> {
+    
     if (!title && !director) {
       return {
         status: 'success',
         message: 'Movies retrieved successfully',
-        data: await this.moviesService.findAll(),
+        data: await this.moviesService.findAll({}),
       };
     }
     try {
