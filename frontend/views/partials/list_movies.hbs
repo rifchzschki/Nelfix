@@ -1,14 +1,8 @@
 <div class="list-movies-container">
-    <h1 style="margin:10px; display: inline; cursor: pointer;">Category</h1>
+    <h1 style="margin:10px; display: inline; cursor: pointer;">Rekomendasi</h1>
     <div class="list-container" style="padding: 10px;">
-        {{>card_movies}}
-        {{>card_movies}}
-        {{>card_movies}}
-        {{>card_movies}}
-        {{>card_movies}}
-        {{>card_movies}}
-        {{>card_movies}}
-        {{>card_movies}}
-        {{>card_movies}}
+        {{#each data}}
+            {{>card_movies cover=this.coverImage title=this.title}}
+        {{/each}}
     </div>
 </div>

@@ -1,12 +1,12 @@
 <div style="color: white" class="detail-movies-container">
     <div>
-        {{>video_player}}
+        {{>video_player title=data.title video=data.video price-info = data.price desc = data.description year=data.releaseYear director=data.director genre=data.genre rating=rating }}
 
     </div>
     <div style="margin: 3% 5%; width:90%">
         {{>list_movies}}
     </div>
     <div class="review-container" style="margin: 3% 5%; width:90%">
-    {{>review}}
+        {{>review data=review users=users}}
     </div>
 </div>

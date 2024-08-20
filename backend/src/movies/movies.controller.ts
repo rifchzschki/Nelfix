@@ -7,10 +7,14 @@ import {
   Delete,
   Query,
   Put,
+  Req,
+  Res,
+  HttpStatus,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { Response, Request } from 'express';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { ResponseDto } from './dto/response.dto';
 import { Movies } from '@prisma/client';
@@ -57,7 +61,6 @@ export class MoviesController {
     @Query('title') title?: string,
     @Query('director') director?: string,
   ): Promise<ResponseDto<Movies[]>> {
-    
     if (!title && !director) {
       return {
         status: 'success',

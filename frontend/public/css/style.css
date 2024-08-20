@@ -6,6 +6,9 @@ body {
   height: 100%;
   font-family: "Manrope", sans-serif;
 }
+.container-body {
+  color: white;
+}
 hr {
   border: 1px solid #999999;
   width: 85vw;
@@ -119,7 +122,8 @@ hr {
 /* Show Page */
 .container-show {
   display: flex;
-  height: 60vh;
+  width: 60%;
+  margin: 0% 20%;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
@@ -129,11 +133,16 @@ hr {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  aspect-ratio: 16/9;
+}
+.wrapper-first-image{
+  display: relative;
+  text-decoration: none;
 }
 
 .container-show button {
   margin: 10px 10px;
-  width: 70vw;
+  width: 70%;
   height: auto;
   padding: 5px 0px;
   background-color: #e50000;
@@ -242,6 +251,30 @@ hr {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.pagi-butt {
+  margin: 10px 10px;
+  height: auto;
+  padding: 10px 35px;
+  color: white;
+  background-color: #e50000;
+  border: none;
+  border-radius: 5px;
+  display: inline;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+/* Pagination */
 /* Galery movies */
 
 /* Search */

@@ -1,17 +1,17 @@
 <div class="video-player-container">
   <div class="video-container">
     <video id="video" controls disabled>
-      <source src="css/videos/dummy.mp4" type="video/mp4" />
+      <source src="{{video}}" type="video/mp4" />
     </video>
     <div id="denied" class="denied">Film ini belum dibeli</div>
   </div>
 </div>
 <div class="desc-video">
-  <h3 style="display: inline-block;">Batman</h3>
-  <h3 style="display: inline-block;">(1920)</h3>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum voluptatum
-    nobis voluptatibus iste dicta iure vitae consequatur, ab voluptatem sunt et,
-    debitis ratione. Nisi vitae quas magni, itaque necessitatibus vel.</p>
-  <sl-rating label="Rating" readonly value="3"></sl-rating>
-  {{>purchase}}
+  <h3 style="display: inline-block;">{{title}}</h3>
+  <h3 style="display: inline-block;">({{year}})</h3>
+  <p>Director: {{director}}</p>
+  <p>{{desc}}</p>
+  <p>Genre: {{genre}}</p>
+  <sl-rating label="Rating" readonly value={{rating}}></sl-rating>
+  {{>purchase price = price-info}}
 </div>

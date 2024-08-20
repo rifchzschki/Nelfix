@@ -1,32 +1,13 @@
-<div class="galery-movies-container" style="padding: 10px;">
-    {{#each movies}}
-        {{>card_movies url=movies.coverImage title=movies.title}}
+<div class="galery-movies-container" id="galery-movies-container" style="padding: 10px;">
+    {{#each data}}
+        {{>card_movies cover=this.coverImage title=this.title}}
     {{/each}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
-    {{>card_movies}}
+</div>
+<div class="pagination">
+    {{#if (gt page 1)}}
+        <a class="pagi-butt active-button" href="/dashboard?page={{subtract page 1}}&pageSize={{pageSize}}">Previous</a>
+    {{/if}}
+    {{#if (lt (multiply pageSize (add page 1)) total)}}
+        <a class="pagi-butt active-button" href="/dashboard?page={{add page 1}}&pageSize={{pageSize}}">Next</a>
+    {{/if}}
 </div>

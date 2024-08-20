@@ -37,6 +37,10 @@ export class MoviesService {
     return data;
   }
 
+  async countMovies():Promise<number>{
+    return this.prisma.movies.count();
+  }
+
   async search(params: {
     title?: string;
     director?: string;

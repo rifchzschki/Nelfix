@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { join } from 'path';
 import * as hbs from 'express-handlebars';
+import './helpers/pagination.helpers';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -16,7 +17,6 @@ async function bootstrap() {
       extname: 'hbs',
       layoutsDir: join(__dirname, '..', '..', 'frontend', 'views', 'layouts'),
       partialsDir: join(__dirname, '..', '..', 'frontend', 'views', 'partials'),
-      helpers: {},
     }),
   );
   app.setViewEngine('hbs');
