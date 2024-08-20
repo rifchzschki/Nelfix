@@ -37,7 +37,7 @@ export class MoviesService {
     return data;
   }
 
-  async countMovies():Promise<number>{
+  async countMovies(): Promise<number> {
     return this.prisma.movies.count();
   }
 
@@ -45,7 +45,15 @@ export class MoviesService {
     title?: string;
     director?: string;
   }): Promise<ResponseDto<Movies[]>> {
-    const { title, director } = params;
+    let { title, director } = params;
+    if(title == null){
+      title = ""
+    }
+    if(director == null){
+      director = ""
+    }
+    console.log(title);
+    console.log(director);
     const movies = await this.prisma.movies.findMany({
       where: {
         OR: [

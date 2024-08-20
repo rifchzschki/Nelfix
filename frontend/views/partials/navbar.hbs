@@ -1,8 +1,18 @@
 <navbar>
   <div class="container-nav">
-    <div class="nelfix active-button">
-      <img src="css/images/Nelfix.svg" alt="" width="" />
-      <p>Nelfix</p>
+    <div style="display: flex; gap: 10%;">
+      <div
+        class="nelfix active-button route-link"
+        route="/dashboard"
+        data-query=""
+      >
+        <img src="css/images/Nelfix.svg" alt="" width="" />
+        <p>Nelfix</p>
+      </div>
+      <div
+        style="color: white; display: flex; align-items: center; cursor: pointer;"
+        class="active-button"
+      >Username</div>
     </div>
     <div class="content-nav">
       <div class="nav-button active-button" id="nav-button">
@@ -10,19 +20,34 @@
       </div>
       <div class="nav-list" id="nav-list">
         <ul>
+          <li
+            style="display: flex; align-items: center; cursor: pointer;"
+            class="active-button"
+          >
+            <img
+              src="css/images/icons8-coins-96.png"
+              alt="Coins icon"
+              class="coins-icon"
+            />
+            <span class="">500</span></li>
           <li><div
-              class="active-button"
+              class="active-button route-link"
               style="cursor: pointer;"
-            >Profile</div></li>
-          <li><div
-              class="active-button"
-              style="cursor: pointer;"
+              route="/browse"
+              data-query=""
             >Search</div></li>
           <li><div
-              class="active-button"
+              class="active-button route-link"
               style="cursor: pointer;"
+              route="/wishlist"
+              data-query="?id_user=1"
             >Wishlist</div></li>
-          <li><div class="active-button" style="cursor: pointer;">My Movies</div></li>
+          <li><div
+              class="active-button route-link"
+              style="cursor: pointer;"
+              route="/bought"
+              data-query="?id_user=1"
+            >My Movies</div></li>
         </ul>
       </div>
     </div>

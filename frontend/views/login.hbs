@@ -1,14 +1,18 @@
 <div class="container" id="container">
   <div class="form-container sign-up-container">
-    <form action="#">
+    <form action="" id="signupForm">
       <h1>Daftar Akun</h1>
       <span>......</span>
-      <input type="text" placeholder="Nama depan" />
-      <input type="text" placeholder="Name belakang" />
-      <input type="email" placeholder="Email" />
-      <input type="username" placeholder="Username" />
-      <input type="password" placeholder="Password" />
-      <button class="active-button" style="cursor: pointer;">Daftar</button>
+      <input type="text" id="daftarNamaDepan" placeholder="Nama depan" />
+      <input type="text" id="daftarNamaBelakang" placeholder="Name belakang" />
+      <input type="email" id="daftarEmail" placeholder="Email" />
+      <input type="username" id="daftarUsername" placeholder="Username" />
+      <input type="password" id="daftarPassword" placeholder="Password" />
+      <button
+        class="active-button"
+        type="submit"
+        style="cursor: pointer;"
+      >Daftar</button>
       <button
         class="ghost-mobile active-button"
         style="cursor: pointer; background-color:#101010; margin: 10px;"
@@ -17,13 +21,18 @@
     </form>
   </div>
   <div class="form-container sign-in-container">
-    <form action="#">
+    <form action="" id="loginForm">
       <h1>Masuk</h1>
       <span>......</span>
-      <input type="username" placeholder="Username" />
-      <input type="password" placeholder="Password" />
+      <a href="/self">uhuy</a>
+      <input type="username" id="loginUsername" placeholder="Username" />
+      <input type="password" id="loginPassword" placeholder="Password" />
       <span style="margin:10px;">Jangan sampai salah ya!</span>
-      <button class="active-button" style="cursor: pointer;">Masuk</button>
+      <button
+        class="active-button"
+        type="submit"
+        style="cursor: pointer;"
+      >Masuk</button>
       <button
         class="ghost-mobile active-button"
         style="cursor: pointer; background-color:#101010; margin: 10px;"

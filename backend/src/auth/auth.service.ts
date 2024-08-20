@@ -13,9 +13,6 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
   async signup(data: CreateUserDto) {
-    console.log(
-      this.prisma.users.findFirst({ where: { username: data.username } }),
-    );
     if (
       isNotEmpty(
         await this.prisma.users.findFirst({

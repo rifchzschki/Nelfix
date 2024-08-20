@@ -1,39 +1,18 @@
 <div class="bought-list-container">
   <h1>List Movies</h1>
-  <div class="element-movies active-button" style="cursor: pointer;">
-    <img src="css/images/dummy.png" alt="Movie poster" class="movie-poster">
+  {{#each movies}}
+  <div class="element-movies active-button route-link" route="/detail" data-query="?id_user=1&id_film={{this.id}}" style="cursor: pointer;">
+    <img src="{{this.coverImage}}" alt="Movie poster" class="movie-poster">
     <div class="movie-info">
-      <h3 class="movie-title">Batman Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis, provident? (2013)</h3>
-      <h4 class="movie-director">Manoj Punjabi</>
+      <h3 class="movie-title">{{this.title}} ({{this.releaseYear}})</h3>
+      <h4 class="movie-director">{{this.director}}<h4/>
       <p class="movie-description">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, deleniti dignissimos similique consequatur quaerat expedita qui voluptate delectus alias esse?
+        {{this.description}}
       </p>
-      <p class="movie-genres">Horror, Sci-Fi</p>
-      <sl-rating label="Rating" readonly value="3"></sl-rating>
+      <p class="movie-genres">{{this.genre}}</p>
+      <p class="movie-director">{{this.duration}} menit</p>
+    {{>purchase price=this.price}}
     </div>
   </div>
-  <div class="element-movies active-button" style="cursor: pointer;">
-    <img src="css/images/dummy.png" alt="Movie poster" class="movie-poster">
-    <div class="movie-info">
-      <h3 class="movie-title">Batman Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis, provident? (2013)</h3>
-      <h4 class="movie-director">Manoj Punjabi</>
-      <p class="movie-description">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, deleniti dignissimos similique consequatur quaerat expedita qui voluptate delectus alias esse?
-      </p>
-      <p class="movie-genres">Horror, Sci-Fi</p>
-      <sl-rating label="Rating" readonly value="3"></sl-rating>
-    </div>
-  </div>
-  <div class="element-movies active-button" style="cursor: pointer;">
-    <img src="css/images/dummy.png" alt="Movie poster" class="movie-poster">
-    <div class="movie-info">
-      <h3 class="movie-title">Batman Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis, provident? (2013)</h3>
-      <h4 class="movie-director">Manoj Punjabi</>
-      <p class="movie-description">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, deleniti dignissimos similique consequatur quaerat expedita qui voluptate delectus alias esse?
-      </p>
-      <p class="movie-genres">Horror, Sci-Fi</p>
-      <sl-rating label="Rating" readonly value="3"></sl-rating>
-    </div>
-  </div>
+  {{/each}}
 </div>

@@ -16,6 +16,8 @@ import { MoviesController } from './movies/movies.controller';
 import { MoviesService } from './movies/movies.service';
 import { FeedbackService } from './feedback/feedback.service';
 import { UsersService } from './users/users.service';
+import { WishlistService } from './wishlist/wishlist.service';
+import { BuyService } from './buy/buy.service';
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { UsersService } from './users/users.service';
     MoviesService,
     FeedbackService,
     UsersService,
+    WishlistService,
+    BuyService,
     {
       provide: APP_INTERCEPTOR,
       useClass: TransformResponseInterceptor,

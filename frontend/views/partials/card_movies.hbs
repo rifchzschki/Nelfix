@@ -1,6 +1,11 @@
-<div class="card-container active-button" style="cursor: pointer;">
-  <img src="{{cover}}" alt="" style="margin-bottom: 0px;"/>
-  <div style="margin-top: 0px;">
-    <span class="price-info">{{title}}</span>
+<div
+  class="card-container active-button route-link"
+  route="/detail"
+  data-query="?id_user=1&id_film={{id}}"
+  style="cursor: pointer;"
+>
+  <img src="{{cover}}" alt="" style="margin-bottom: 0px;" />
+  <div style="width:100%;">
+    <p class="card-info">{{title}}</p>
   </div>
 </div>

@@ -135,7 +135,7 @@ hr {
   background-repeat: no-repeat;
   aspect-ratio: 16/9;
 }
-.wrapper-first-image{
+.wrapper-first-image {
   display: relative;
   text-decoration: none;
 }
@@ -195,7 +195,7 @@ hr {
   max-width: 350px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 5px;
 }
@@ -510,7 +510,13 @@ sl-rating {
   margin-right: 8px;
 }
 
-.price-info {
+.card-info {
+  text-align: center;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  width: 100%;
   font-size: 1em;
   font-weight: bold;
 }
@@ -589,7 +595,23 @@ sl-textarea::part(base) {
   flex-direction: column;
   align-items: center;
 }
-
+.bought-list-container .purchase-container {
+  justify-content: flex-end;
+}
+.bought-list-container button {
+  margin: 10px 10px;
+  height: auto;
+  padding: 10px 35px;
+  color: white;
+  background-color: #e50000;
+  border: none;
+  border-radius: 5px;
+  display: inline;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
 .element-movies {
   display: flex;
   flex-wrap: wrap;
@@ -598,14 +620,16 @@ sl-textarea::part(base) {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
+  width: 90%;
 }
 
 .movie-poster {
-  width: 150px;
-  height: auto;
+  width: 25%;
+  aspect-ratio: 16/9;
   margin-right: 20px;
   border-radius: 8px;
   margin: auto;
+  object-fit: cover;
 }
 
 .movie-info {
@@ -664,5 +688,22 @@ sl-textarea::part(base) {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.wishlist-container .purchase-container {
+  justify-content: flex-end;
+}
+.wishlist-container button {
+  margin: 10px 10px;
+  height: auto;
+  padding: 10px 35px;
+  color: white;
+  background-color: #e50000;
+  border: none;
+  border-radius: 5px;
+  display: inline;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 /* Wishlist */

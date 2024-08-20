@@ -9,40 +9,18 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
-  async signup(@Body() createAccount: CreateUserDto): Promise<ResponseDto> {
-    try {
+  async signup(@Body() createAccount: CreateUserDto){
       return {
-        status: 'success',
-        message: 'Sign up successfuly',
-        data: {
-          username: createAccount.username,
-          token: (await this.authService.signup(createAccount)).access_token,
-        },
+        username: createAccount.username,
+        token: (await this.authService.signup(createAccount)).access_token,
       };
-    } catch (error) {
-      return {
-        status: 'error',
-        message: error.message,
-      };
-    }
   }
 
   @Post('login')
-  async login(@Body() loginData: LoginUserDto): Promise<ResponseDto> {
-    try {
-      return {
-        status: 'success',
-        message: 'Login successfuly',
-        data: {
-          username: loginData.username,
-          token: (await this.authService.login(loginData)).access_token,
-        },
-      };
-    } catch (error) {
-      return {
-        status: 'error',
-        message: error.message,
-      };
+  async login(@Body() loginData: LoginUserDto) {
+    return {
+      username: loginData.username,
+      token: (await this.authService.login(loginData)).access_token,
     }
   }
 }
