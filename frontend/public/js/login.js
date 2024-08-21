@@ -1,3 +1,20 @@
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie =
+    name +
+    "=" +
+    encodeURIComponent(value) +
+    "; expires=" +
+    expires +
+    "; path=/";
+}
+
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  if (match) return decodeURIComponent(match[2]);
+  return null;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const signUpButton_mobile = document.getElementById("signUp-mobile");
   const signInButton_mobile = document.getElementById("signIn-mobile");
@@ -25,8 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signupForm");
   const loginForm = document.getElementById("loginForm");
-  const getProfileButton = document.getElementById("getProfile");
-  const profileInfo = document.getElementById("profileInfo");
+  const logoutButton = document.getElementById("logoutButton");
+
 
   // Handle Login
   loginForm.addEventListener("submit", async (e) => {
@@ -43,13 +60,19 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({ username, password }),
     });
 
-    const data = await response.json();
-    console.log(data);
+    const data = (await response.json()).data;
     if (response.ok) {
-      // Simpan JWT di localStorage
-      localStorage.setItem("token", data.access_token);
-      window.location.href = '/dashboard';
-      alert("Login successful!");
+      const responseCookies = await fetch("/auth/cookies", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if (responseCookies.ok) {
+        window.location.href = "/dashboard";
+        alert("Login successful!");
+      }
     } else {
       alert("Login failed: " + data.message);
     }
@@ -66,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const username = document.getElementById("daftarUsername").value;
     const password = document.getElementById("daftarPassword").value;
     const role = "user";
-    
+
     const response = await fetch("/auth/signup", {
       method: "POST",
       headers: {
@@ -88,25 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Signup successful!");
     } else {
       alert("Signup failed: " + data.message);
-    }
-  });
-
-  // Handle Get Profile
-  getProfileButton.addEventListener("click", async () => {
-    const token = localStorage.getItem("token");
-
-    const response = await fetch("http://localhost:3000/profile", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      profileInfo.textContent = `User ID: ${data.userId}, Username: ${data.username}`;
-    } else {
-      alert("Failed to get profile: " + data.message);
     }
   });
 });

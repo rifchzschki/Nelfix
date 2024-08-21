@@ -48,20 +48,14 @@ export class MoviesController {
     type: ResponseDto,
   })
   @ApiQuery({
-    name: 'title',
+    name: 'query',
     required: false,
     description: 'Title of the movie',
   }) // Tambahkan ApiQuery
-  @ApiQuery({
-    name: 'director',
-    required: false,
-    description: 'Director of the movie',
-  }) // Tambahkan ApiQuery
   async searchMovies(
-    @Query('title') title?: string,
-    @Query('director') director?: string,
+    @Query('query') query?: string,
   ): Promise<ResponseDto<Movies[]>> {
-    if (!title && !director) {
+    if (!query) {
       return {
         status: 'success',
         message: 'Movies retrieved successfully',
@@ -69,7 +63,7 @@ export class MoviesController {
       };
     }
     try {
-      return this.moviesService.search({ title, director });
+      return this.moviesService.search(query);
     } catch (error) {
       return {
         status: 'error',

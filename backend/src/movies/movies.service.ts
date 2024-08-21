@@ -41,30 +41,23 @@ export class MoviesService {
     return this.prisma.movies.count();
   }
 
-  async search(params: {
-    title?: string;
-    director?: string;
-  }): Promise<ResponseDto<Movies[]>> {
-    let { title, director } = params;
-    if(title == null){
-      title = ""
+  async search(query: string): Promise<ResponseDto<Movies[]>> {
+    if (query == null) {
+      query = '';
     }
-    if(director == null){
-      director = ""
-    }
-    console.log(title);
-    console.log(director);
     const movies = await this.prisma.movies.findMany({
       where: {
         OR: [
           {
             title: {
-              contains: title,
-              mode: 'insensitive',
+              contains: query,
+              mode: 'insensitive', // Pencarian tidak case-sensitive
             },
+          },
+          {
             director: {
-              contains: director,
-              mode: 'insensitive',
+              contains: query,
+              mode: 'insensitive', // Pencarian tidak case-sensitive
             },
           },
         ],

@@ -19,19 +19,8 @@ export class BuyController {
   @Post()
   async createTransaction(
     @Body() createBuyDto: CreateBuyDto,
-  ): Promise<ResponseDto<CreateBuyDto>> {
-    try {
-      return {
-        status: 'success',
-        message: 'transaction success',
-        data: await this.buyService.create(createBuyDto),
-      };
-    } catch (error) {
-      return {
-        status: 'error',
-        message: 'transaction failed',
-      };
-    }
+  ){
+    return await this.buyService.create(createBuyDto);
   }
 
   @Get(':id_user')

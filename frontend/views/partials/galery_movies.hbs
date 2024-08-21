@@ -1,13 +1,13 @@
 <div class="galery-movies-container" id="galery-movies-container" style="padding: 10px;">
     {{#each data}}
-        {{>card_movies id=this.id price=this.price cover=this.coverImage title=this.title}}
+        {{>card_movies id=this.id price=this.price cover=this.coverImage title=this.title user=../user}}
     {{/each}}
 </div>
 <div class="pagination">
     {{#if (gt page 1)}}
         <a class="pagi-butt active-button" href="/{{route}}?page={{subtract page 1}}&pageSize={{pageSize}}">Previous</a>
     {{/if}}
-    {{#if (lt (multiply pageSize (add page 1)) total)}}
+    {{#if (lt (multiply pageSize page) total)}}
         <a class="pagi-butt active-button" href="/{{route}}?page={{add page 1}}&pageSize={{pageSize}}">Next</a>
     {{/if}}
 </div>

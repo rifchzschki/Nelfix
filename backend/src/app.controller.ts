@@ -1,15 +1,17 @@
 import {
   Controller,
   Get,
-  Headers,
+  Req,
   Query,
   BadRequestException,
   Res,
-  Request,
   UseInterceptors,
+  UseGuards,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Response } from 'express';
+import { JwtAuthGuard } from './auth/guards/jwt.auth.guard';
+import { Response, Request } from 'express';
 import { TransformResponseInterceptor } from './common/interceptors/transform-response.interceptor';
 
 @Controller()
@@ -25,14 +27,18 @@ export class AppController {
     });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('browse')
   async browse(
     @Res() res: Response,
-    @Query('director') director?: string,
-    @Query('title') title?: string,
+    @Req() req: Request,
+    @Query('query') query?: string,
     @Query('page') page = '1',
     @Query('pageSize') pageSize = '18',
   ) {
+    const user = await this.appService.getUserFromUsername(
+      this.appService.getInfo(req, true).username,
+    );
     const pageNumber = parseInt(page, 10);
     const pageSizeNumber = parseInt(pageSize, 10);
     if (isNaN(pageNumber) || pageNumber < 1) {
@@ -41,30 +47,36 @@ export class AppController {
     if (isNaN(pageSizeNumber) || pageSizeNumber < 1) {
       throw new BadRequestException('Invalid page size');
     }
-    const totalMovies = await this.appService.allMovies();
-    const movies = await this.appService.getMovies(
+    const moviesResponse = await this.appService.getMovies(
       pageNumber,
       pageSizeNumber,
-      director,
-      title,
+      query,
     );
-    console.log(movies);
+    const { movies, total } = moviesResponse;
+    console.log(total);
     return res.render('browse', {
       layout: 'layout_main',
       data: movies,
-      total: totalMovies,
+      total: total,
       page: pageNumber,
       pageSize: pageSizeNumber,
       route: 'browse',
+      user: user,
     });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('dashboard')
   async dashboard(
     @Res() res: Response,
+    @Req() req: Request,
     @Query('page') page = '1',
     @Query('pageSize') pageSize = '12',
   ) {
+    const user = await this.appService.getUserFromUsername(
+      this.appService.getInfo(req, true).username,
+    );
+    console.log(user);
     const pageNumber = parseInt(page, 10);
     const pageSizeNumber = parseInt(pageSize, 10);
     if (isNaN(pageNumber) || pageNumber < 1) {
@@ -73,33 +85,45 @@ export class AppController {
     if (isNaN(pageSizeNumber) || pageSizeNumber < 1) {
       throw new BadRequestException('Invalid page size');
     }
-    const totalMovies = await this.appService.allMovies();
-    const firstMovies = await this.appService.getMovies(1, 1);
-    const movies = await this.appService.getMovies(pageNumber, pageSizeNumber);
+    const { movies: moviesPagi, total: totalPagi } =
+      await this.appService.getMovies(pageNumber, pageSizeNumber);
+    const { movies, total } = await this.appService.getMovies();
+    const { movies: firstMovies, total: totalTmp } =
+      await this.appService.getMovies((pageNumber - 1) * pageSizeNumber + 1, 1);
     return res.render('dashboard', {
       layout: 'layout_main',
       firstData: firstMovies,
+      dataPagi: moviesPagi,
       data: movies,
-      total: totalMovies,
+      total: total,
       page: pageNumber,
       pageSize: pageSizeNumber,
       route: 'dashboard',
+      user: user,
     });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('detail')
   async detail(
     @Res() res: Response,
+    @Req() req: Request,
     @Query('id_user') id_user,
     @Query('id_film') id_film,
   ) {
+    const isBought = await this.appService.isBoughtInfo(id_user, id_film);
+    const user = await this.appService.getUserFromUsername(
+      this.appService.getInfo(req, true).username,
+    );
     const movie = await this.appService.getMovie(+id_film);
     const review = await this.appService.getReview(false, +id_user, +id_film);
     let users = [];
     let sum = 0;
     for (const element of review) {
       sum += element.rating;
-      users.push(await this.appService.getUserUsername(element.id_user));
+      users.push(
+        (await this.appService.getUserFromId(element.id_user)).username,
+      );
     }
     const combinedReviews = review.map((review, index) => ({
       username: users[index],
@@ -113,29 +137,54 @@ export class AppController {
       rating: averageRating,
       review: combinedReviews,
       users: users,
+      user: user,
+      isBought: isBought,
     });
   }
+  @UseGuards(JwtAuthGuard)
   @Get('bought')
-  async bought(@Res() res: Response, @Query('id_user') id_user: number) {
+  async bought(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Query('id_user') id_user: number,
+  ) {
+    const user = await this.appService.getUserFromUsername(
+      this.appService.getInfo(req, true).username,
+    );
     const movies = await this.appService.getBoughtList(+id_user);
     return res.render('bought_list', {
       layout: 'layout_main',
       movies: movies,
+      user: user,
     });
   }
+  @UseGuards(JwtAuthGuard)
   @Get('wishlist')
-  async wishlist(@Res() res: Response, @Query('id_user') id_user: string) {
+  async wishlist(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Query('id_user') id_user: string,
+  ) {
+    const user = await this.appService.getUserFromUsername(
+      this.appService.getInfo(req, true).username,
+    );
     const movies = await this.appService.getWishlist(+id_user);
     return res.render('wishlist', {
       layout: 'layout_main',
       movies: movies,
+      user: user,
     });
   }
 
-  @Get('self') //nanti dibuat kalo frontend nya dah ada
-  showToken(@Request() req) {
-    const username = req.user;
-    const token = req.headers.authorization.split(' ')[1];
-    return { username, token };
+  @UseGuards(JwtAuthGuard)
+  @Get('self')
+  showToken(@Req() req: Request) {
+    return this.appService.getInfo(req, false);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('info')
+  getUserInfo(@Req() req: Request) {
+    return this.appService.getInfo(req, true);
   }
 }

@@ -12,7 +12,7 @@
       <div
         style="color: white; display: flex; align-items: center; cursor: pointer;"
         class="active-button"
-      >Username</div>
+      >{{user.username}}</div>
     </div>
     <div class="content-nav">
       <div class="nav-button active-button" id="nav-button">
@@ -29,7 +29,7 @@
               alt="Coins icon"
               class="coins-icon"
             />
-            <span class="">500</span></li>
+            <span class="">{{user.balance}}</span></li>
           <li><div
               class="active-button route-link"
               style="cursor: pointer;"
@@ -40,17 +40,21 @@
               class="active-button route-link"
               style="cursor: pointer;"
               route="/wishlist"
-              data-query="?id_user=1"
+              data-query="?id_user={{user.id}}"
             >Wishlist</div></li>
           <li><div
               class="active-button route-link"
               style="cursor: pointer;"
               route="/bought"
-              data-query="?id_user=1"
+              data-query="?id_user={{user.id}}"
             >My Movies</div></li>
+          <li><div
+              class="active-button"
+              id="logout-button"
+              style="cursor: pointer; background-color:#9999; border-radius: 10%;"
+            >Logout</div></li>
         </ul>
       </div>
     </div>
-
   </div>
 </navbar>

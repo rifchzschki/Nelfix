@@ -12,53 +12,34 @@ document.addEventListener("click", function (event) {
   }
 });
 
-document.getElementById("buy-button").addEventListener("click", function () {
-  const purchase = document.getElementById("purchase");
-  const video = document.getElementById("video");
-  video.removeAttribute("disabled");
-  purchase.style.display = "none";
-  document.getElementById("denied").style.display = "none";
+document.getElementById("detail-movies").addEventListener("DOMContentLoaded", function () {
+  
 });
 
-async function fetchMovies() {
-  try {
-    // Menggunakan query parameter 'poll' untuk long polling
-    const response = await fetch("films");
-    if (response.status === 204) {
-      // Tidak ada data, lanjutkan polling
-      return [];
+document
+  .getElementById("buy-button")
+  .addEventListener("click", async function () {
+    const purchase = document.getElementById("purchase");
+    const video = document.getElementById("video");
+    const urlParams = new URLSearchParams(window.location.search);
+    const id_user = parseInt(urlParams.get("id_user"), 10);
+    const id_film = parseInt(urlParams.get("id_film"), 10);
+
+    const response = await fetch("/buy", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id_user, id_film }),
+    });
+
+    console.log(response);
+
+    if (response.ok) {
+      video.removeAttribute("disabled");
+      purchase.style.display = "none";
+      document.getElementById("denied").style.display = "none";
+    } else {
+      alert("Pembelian gagal");
     }
-    const result = await response.json();
-    return result.data || [];
-  } catch (error) {
-    console.error("Error fetching movies:", error);
-    return [];
-  }
-}
-
-async function updateMovies() {
-  const movies = await fetchMovies();
-  const moviesContainer = document.getElementById("galery-movies-container");
-  moviesContainer.innerHTML = ""; // Clear previous content
-
-  movies.forEach((movie) => {
-    movieElement.innerHTML = `
-      <div class="card-container active-button" style="cursor: pointer;">
-        <img src="${movie.coverImage}" alt="${movie.title}" style="margin-bottom: 0px;"/>
-        <div style="margin-top: 0px;">
-          <span class="price-info">Tonton</span>
-        </div>
-      </div>
-    `;
-
-    moviesContainer.appendChild(movieElement);
   });
-}
-
-function startLongPolling() {
-  updateMovies().then(() => {
-    setTimeout(startLongPolling, 5000); // Polling setiap 5 detik
-  });
-}
-
-window.onload = startLongPolling;

@@ -1,7 +1,7 @@
 <div class="wishlist-container">
   <h1>Wishlist</h1>
   {{#each movies}}
-  <div class="element-movies active-button route-link" route="/detail" data-query="?id_user=1&id_film={{this.id}}" style="cursor: pointer;">
+  <div class="element-movies active-button route-link" route="/detail" data-query="?id_user={{../user.id}}&id_film={{this.id}}" style="cursor: pointer;">
     <img src="{{this.coverImage}}" alt="Movie poster" class="movie-poster">
     <div class="movie-info">
       <h3 class="movie-title">{{this.title}} ({{this.releaseYear}})</h3>

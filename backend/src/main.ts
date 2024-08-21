@@ -5,10 +5,15 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { join } from 'path';
 import * as hbs from 'express-handlebars';
 import './helpers/pagination.helpers';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  app.enableCors({
+    origin: '*',
+    allowedHeaders: 'Authorization, Content-Type',
+  });
   app.useStaticAssets(join(__dirname, '..', '..', 'frontend', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', '..', 'frontend', 'views'));
   app.engine(
@@ -26,9 +31,11 @@ async function bootstrap() {
     .setDescription('Api documentation for Nelfix app')
     .setVersion('1.0')
     .addTag('Nelfix')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  app.use(cookieParser());
 
   const port = 3000;
   await app.listen(port);

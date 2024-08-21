@@ -1,9 +1,16 @@
 <div class="video-player-container">
   <div class="video-container">
+    {{#if isBought}}
+    <video id="video" controls>
+      <source src="{{video}}" type="video/mp4" />
+    </video>
+    <div id="denied" style="display: none;" class="denied">Film ini belum dibeli</div>
+    {{else}}
     <video id="video" controls disabled>
       <source src="{{video}}" type="video/mp4" />
     </video>
     <div id="denied" class="denied">Film ini belum dibeli</div>
+    {{/if}}
   </div>
 </div>
 <div class="desc-video">
@@ -13,5 +20,8 @@
   <p>{{desc}}</p>
   <p>Genre: {{genre}}</p>
   <sl-rating label="Rating" readonly value={{rating}}></sl-rating>
-  {{>purchase price = price-info}}
+    {{#if isBought}}
+    {{else}}
+    {{>purchase price = price-info isBought=isBought}}
+    {{/if}}
 </div>

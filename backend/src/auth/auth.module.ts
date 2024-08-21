@@ -4,15 +4,21 @@ import { AuthController } from './auth.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './local.strategy';
-import { JwtStrategy } from './jwt.strategy';
+import { LocalStrategy } from './strategy/local.strategy';
+import { JwtStrategy } from './strategy/jwt.strategy';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     PassportModule,
-    JwtModule.register({
-      secret: 'SECRET_KEY', // Gantilah dengan kunci rahasia yang lebih aman
-      signOptions: { expiresIn: '60m' },
+    ConfigModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'), // Menggunakan ConfigService untuk mendapatkan JWT_SECRET
+        signOptions: { expiresIn: '60m' },
+      }),
     }),
   ],
   providers: [AuthService, PrismaService, LocalStrategy, JwtStrategy],

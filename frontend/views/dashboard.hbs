@@ -1,6 +1,6 @@
 <div style=" margin: 0px 40px;">
   {{#each firstData}}
-  <div route="/detail" data-query="?id_user=1&id_film={{this.id}}" class="container-show active-button route-link" style="cursor: pointer;background-image: url('{{this.coverImage}}');">
+  <div route="/detail" data-query="?id_user={{../user.id}}&id_film={{this.id}}" class="container-show active-button route-link" style="cursor: pointer;background-image: url('{{this.coverImage}}');">
     <h2 class="active-button" style="margin:0;">{{this.title}}</h2>
     <button>
       <img src="css/images/IconPlay.svg" alt="" style="margin: 5px 5px;" />
@@ -14,7 +14,7 @@
   </div>
   {{/each}}
   <hr/>
-  {{>list_movies}}
+  {{>list_movies data = data}}
   <hr/>
-  {{>galery_movies}}
+  {{>galery_movies data = dataPagi}}
 </div>

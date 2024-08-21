@@ -7,40 +7,29 @@ import { UsersModule } from './users/users.module';
 import { MoviesModule } from './movies/movies.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { BuyModule } from './buy/buy.module';
 import { WishlistModule } from './wishlist/wishlist.module';
 import { FeedbackModule } from './feedback/feedback.module';
-import { MoviesController } from './movies/movies.controller';
 import { MoviesService } from './movies/movies.service';
 import { FeedbackService } from './feedback/feedback.service';
 import { UsersService } from './users/users.service';
 import { WishlistService } from './wishlist/wishlist.service';
 import { BuyService } from './buy/buy.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
     MoviesModule,
     PrismaModule,
     AuthModule,
-    JwtModule.register({
-      secret: 'SECRET_KEY', // Gantilah dengan kunci rahasia yang lebih aman
-      signOptions: { expiresIn: '60m' },
-    }),
-    ConfigModule.forRoot(), // Memuat variabel lingkungan dari file .env
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '60m' },
-      }),
-      inject: [ConfigService],
-    }),
     UsersModule,
     BuyModule,
     WishlistModule,
     FeedbackModule,
+    ConfigModule.forRoot({
+      isGlobal: true, // Membuat ConfigModule tersedia di seluruh aplikasi tanpa perlu impor ulang
+    }),
   ],
   controllers: [AppController],
   providers: [
@@ -50,6 +39,7 @@ import { BuyService } from './buy/buy.service';
     UsersService,
     WishlistService,
     BuyService,
+    JwtService,
     {
       provide: APP_INTERCEPTOR,
       useClass: TransformResponseInterceptor,
