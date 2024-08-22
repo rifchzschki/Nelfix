@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-import { ResponseDto } from './dto/response.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { Movies } from '@prisma/client';
 
@@ -14,9 +13,23 @@ import { Movies } from '@prisma/client';
 export class MoviesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: CreateMovieDto) {
+  async create(movieData: CreateMovieDto) {
+    //algo for url...
+    const video_url = '';
+    const cover_url = '';
+
     return this.prisma.movies.create({
-      data,
+      data: {
+        title: movieData.title,
+        description: movieData.description,
+        director: movieData.director,
+        release_year: movieData.release_year,
+        genre: movieData.genre,
+        price: movieData.price,
+        duration: movieData.duration,
+        video_url: video_url,
+        cover_image_url: cover_url,
+      },
     });
   }
 
@@ -41,7 +54,7 @@ export class MoviesService {
     return this.prisma.movies.count();
   }
 
-  async search(query: string): Promise<ResponseDto<Movies[]>> {
+  async search(query: string) {
     if (query == null) {
       query = '';
     }
@@ -64,14 +77,7 @@ export class MoviesService {
       },
     });
 
-    return {
-      status: 'success',
-      message:
-        movies.length > 0
-          ? 'Movies retrieved successfully'
-          : 'Movies not found',
-      data: movies,
-    };
+    return movies;
   }
 
   public async findOne(id: number) {
@@ -95,13 +101,33 @@ export class MoviesService {
     }
   }
 
-  async update(id: number, data: UpdateMovieDto) {
+  async update(id: number, movieData: UpdateMovieDto) {
     if (isNaN(id) || id <= 0) {
       throw new BadRequestException('Invalid ID');
     }
-    return this.prisma.movies.update({
+
+    // Ambil data movie hanya sekali
+    const existingMovie = await this.findOne(id);
+
+    // Jika movie tidak ditemukan, lemparkan exception
+    if (!existingMovie) {
+      throw new NotFoundException('Movie not found');
+    }
+    console.log('Updating movie with data:', movieData);
+
+    return await this.prisma.movies.update({
       where: { id },
-      data,
+      data: {
+        title: movieData.title ?? existingMovie.title,
+        description: movieData.description ?? existingMovie.description,
+        director: movieData.director ?? existingMovie.director,
+        release_year: movieData.release_year ?? existingMovie.release_year,
+        genre: movieData.genre ?? existingMovie.genre,
+        price: movieData.price ?? existingMovie.price,
+        duration: movieData.duration ?? existingMovie.duration,
+        video_url: existingMovie.video_url,
+        cover_image_url: existingMovie.cover_image_url,
+      },
     });
   }
 

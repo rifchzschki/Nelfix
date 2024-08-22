@@ -1,5 +1,15 @@
-import { IsArray, ArrayNotEmpty, ValidateNested, IsString, IsInt, IsOptional, IsPositive, IsUrl } from 'class-validator';
+import {
+  IsArray,
+  ArrayNotEmpty,
+  ValidateNested,
+  IsString,
+  IsInt,
+  IsOptional,
+  IsPositive,
+  IsUrl,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+import { isBuffer } from 'util';
 
 export class CreateMovieDto {
   @IsString()
@@ -12,7 +22,7 @@ export class CreateMovieDto {
   director: string;
 
   @IsInt()
-  releaseYear: number;
+  release_year: number;
 
   @IsArray()
   @ArrayNotEmpty({ message: 'The genre array should not be empty.' })
@@ -26,10 +36,9 @@ export class CreateMovieDto {
   @IsInt()
   duration: number;
 
-  @IsUrl()
-  video: string;
-
-  @IsUrl()
   @IsOptional()
-  coverImage?: string;
+  cover_image?: File | null;
+
+  @IsOptional()
+  video?: File | null;
 }

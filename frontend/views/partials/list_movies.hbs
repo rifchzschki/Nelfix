@@ -2,7 +2,7 @@
     <h1 style="margin:10px; display: inline; cursor: pointer;">Rekomendasi</h1>
     <div class="list-container" style="padding: 10px;">
         {{#each data}}
-            {{>card_movies cover=this.coverImage title=this.title user=../user}}
+            {{>card_movies cover=this.cover_image_url title=this.title user=../user}}
         {{/each}}
     </div>
 </div>

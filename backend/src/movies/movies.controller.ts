@@ -24,21 +24,22 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Post()
-  async create(
-    @Body() createMovieDto: CreateMovieDto,
-  ): Promise<ResponseDto<Movies>> {
-    try {
-      return {
-        status: 'success',
-        message: 'Movie success created',
-        data: await this.moviesService.create(createMovieDto),
-      };
-    } catch (error) {
-      return {
-        status: 'error',
-        message: error.message,
-      };
-    }
+  async create(@Body() createMovieDto: CreateMovieDto) {
+    const movie = await this.moviesService.create(createMovieDto);
+    return {
+      id: movie.id.toString(),
+      title: movie.title,
+      description: movie.description,
+      director: movie.director,
+      release_year: movie.release_year,
+      genre: movie.genre,
+      price: movie.price,
+      duration: movie.duration,
+      video_url: movie.video_url,
+      cover_image_url: movie.cover_image_url,
+      created_at: movie.created_at,
+      updated_at: movie.updated_at,
+    };
   }
 
   @Get()
@@ -52,76 +53,101 @@ export class MoviesController {
     required: false,
     description: 'Title of the movie',
   }) // Tambahkan ApiQuery
-  async searchMovies(
-    @Query('query') query?: string,
-  ): Promise<ResponseDto<Movies[]>> {
+  async searchMovies(@Query('query') query?: string) {
+    let movies: Movies[] = [];
     if (!query) {
-      return {
-        status: 'success',
-        message: 'Movies retrieved successfully',
-        data: await this.moviesService.findAll({}),
-      };
+      movies = await this.moviesService.findAll({});
     }
-    try {
-      return this.moviesService.search(query);
-    } catch (error) {
-      return {
-        status: 'error',
-        message: error.message,
-      };
-    }
+    movies = await this.moviesService.search(query);
+    const filteredMovies = movies.map(
+      ({
+        id,
+        title,
+        description,
+        director,
+        release_year,
+        genre,
+        price,
+        duration,
+        video_url,
+        cover_image_url,
+        created_at,
+        updated_at,
+      }) => ({
+        id: id.toString(),
+        title,
+        description,
+        director,
+        release_year,
+        genre,
+        price,
+        duration,
+        cover_image_url,
+        video_url,
+        created_at,
+        updated_at,
+      }),
+    );
+    return filteredMovies;
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<ResponseDto<Movies>> {
-    try {
-      return {
-        status: 'success',
-        message: `Movie with id: ${id} is found`,
-        data: await this.moviesService.findOne(+id),
-      };
-    } catch (error) {
-      return {
-        status: 'error',
-        message: error.message,
-      };
-    }
+  async findOne(@Param('id') id: string) {
+    const movie = await this.moviesService.findOne(+id);
+    return {
+      id: movie.id.toString(),
+      title: movie.title,
+      description: movie.description,
+      director: movie.director,
+      release_year: movie.release_year,
+      genre: movie.genre,
+      price: movie.price,
+      duration: movie.duration,
+      video_url: movie.video_url,
+      cover_image_url: movie.cover_image_url,
+      created_at: movie.created_at,
+      updated_at: movie.updated_at,
+    };
   }
-
   @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updateMovieDto: UpdateMovieDto,
-  ): Promise<ResponseDto<Movies>> {
-    try {
-      return {
-        status: 'success',
-        message: `Movie with id: ${id} has been updated`,
-        data: await this.moviesService.update(+id, updateMovieDto),
-      };
-    } catch (error) {
-      console.error('Error finding movie:', error);
-      return {
-        status: 'error',
-        message: error.code === 'P2025' ? 'Movies not found' : error.message,
-      };
-    }
+  ) {
+    console.log('Updating movie with data:', updateMovieDto);
+    const movie = await this.moviesService.update(+id, updateMovieDto);
+    return {
+      id: movie.id.toString(),
+      title: movie.title,
+      description: movie.description,
+      director: movie.director,
+      release_year: movie.release_year,
+      genre: movie.genre,
+      price: movie.price,
+      duration: movie.duration,
+      video_url: movie.video_url,
+      cover_image_url: movie.cover_image_url,
+      created_at: movie.created_at,
+      updated_at: movie.updated_at,
+    };
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<ResponseDto<Movies>> {
-    try {
-      return {
-        status: 'success',
-        message: `Movies with id: ${id} has been deleted`,
-        data: await this.moviesService.remove(+id),
-      };
-    } catch (error) {
-      console.error('Error finding movie:', error);
-      return {
-        status: 'error',
-        message: error.code === 'P2025' ? 'Movies not found' : error.message,
-      };
-    }
+  async remove(@Param('id') id: string) {
+    const movie = await this.moviesService.remove(+id);
+    return {
+      id: movie.id.toString(),
+      title: movie.title,
+      description: movie.description,
+      director: movie.director,
+      release_year: movie.release_year,
+      genre: movie.genre,
+      price: movie.price,
+      duration: movie.duration,
+      video_url: movie.video_url,
+      cover_image_url: movie.cover_image_url,
+      created_at: movie.created_at,
+      updated_at: movie.updated_at,
+    };
   }
 }

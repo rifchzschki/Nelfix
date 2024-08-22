@@ -9,17 +9,27 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private readonly configService: ConfigService) {
     super({
       jwtFromRequest: (req: Request) => {
-        // Ambil token dari cookie
-        const token = req.cookies['authToken'];
-        if (!token) {
-          throw new UnauthorizedException('Token not found in cookies');
+        // Ambil token dari header Authorization atau cookie
+        const authHeader = req.headers.authorization;
+        const tokenFromHeader = authHeader && authHeader.startsWith('Bearer ') 
+          ? authHeader.split(' ')[1] 
+          : null;
+        
+        const tokenFromCookie = req.cookies['authToken'];
+
+        if (tokenFromHeader) {
+          return tokenFromHeader;
         }
-        return token;
+
+        if (tokenFromCookie) {
+          return tokenFromCookie;
+        }
+
+        throw new UnauthorizedException('Token not found in headers or cookies');
       },
       ignoreExpiration: false,
       secretOrKey: configService.get<string>('JWT_SECRET'), // Gunakan kunci rahasia Anda
     });
-  
   }
 
   async validate(payload: any) {

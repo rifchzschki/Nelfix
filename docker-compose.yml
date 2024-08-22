@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - ./backend:/app
+      - ./frontend:/app/public
+      - /app/node_modules
+    depends_on:
+      - prisma
+
+  prisma:
+    image: prisma/prisma:latest
+    restart: always
+    ports:
+      - "4466:4466"
+    volumes:
+      - ./prisma:/prisma
+    environment:
+      DIRECT_URL: ${DIRECT_URL}
+      DATABASE_URL: ${DATABASE_URL}

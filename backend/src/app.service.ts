@@ -35,8 +35,8 @@ export class AppService {
       }
       const movies = await this.movieService.search(query);
       return {
-        movies: movies.data.slice(limit * (page - 1), limit * page),
-        total: movies.data.length,
+        movies: movies.slice(limit * (page - 1), limit * page),
+        total: movies.length,
       };
     }
   }
@@ -104,12 +104,12 @@ export class AppService {
     } else {
       return {
         username: decoded.username,
-        token: token.token,
+        token: token,
       };
     }
   }
 
-  async isBoughtInfo(id_user: number, id_film: number){
+  async isBoughtInfo(id_user: number, id_film: number) {
     return await this.buyService.isBought(id_user, id_film);
   }
 }

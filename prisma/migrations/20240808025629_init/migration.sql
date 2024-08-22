@@ -18,14 +18,14 @@ CREATE TABLE "Movies" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "director" TEXT NOT NULL,
-    "releaseYear" INTEGER NOT NULL,
+    "release_year" INTEGER NOT NULL,
     "genre" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "duration" INTEGER NOT NULL,
     "video" TEXT NOT NULL,
-    "coverImage" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "cover_image_url" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Movies_pkey" PRIMARY KEY ("id")
 );

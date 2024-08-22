@@ -8,11 +8,14 @@ import {
   UseInterceptors,
   UseGuards,
   UnauthorizedException,
+  Post,
+  Body,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './auth/guards/jwt.auth.guard';
 import { Response, Request } from 'express';
 import { TransformResponseInterceptor } from './common/interceptors/transform-response.interceptor';
+import { LoginUserDto } from './auth/dto/login-auth.dto';
 
 @Controller()
 @UseInterceptors(TransformResponseInterceptor)
@@ -129,11 +132,12 @@ export class AppController {
       username: users[index],
       ...review,
     }));
-
+    const { movies, total } = await this.appService.getMovies();
     const averageRating = sum / review.length;
     return res.render('detail_movies', {
       layout: 'layout_main',
       data: movie,
+      movies: movies,
       rating: averageRating,
       review: combinedReviews,
       users: users,
@@ -187,4 +191,8 @@ export class AppController {
   getUserInfo(@Req() req: Request) {
     return this.appService.getInfo(req, true);
   }
+
+
+
+
 }

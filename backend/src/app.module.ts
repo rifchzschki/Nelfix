@@ -17,6 +17,7 @@ import { UsersService } from './users/users.service';
 import { WishlistService } from './wishlist/wishlist.service';
 import { BuyService } from './buy/buy.service';
 import { JwtService } from '@nestjs/jwt';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { JwtService } from '@nestjs/jwt';
     WishlistService,
     BuyService,
     JwtService,
+    AuthService,
     {
       provide: APP_INTERCEPTOR,
       useClass: TransformResponseInterceptor,

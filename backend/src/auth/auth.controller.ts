@@ -12,11 +12,11 @@ import { LoginUserDto } from './dto/login-auth.dto';
 import { ResponseDto } from './dto/response.dto';
 import { Response } from 'express';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('signup')
+  @Post('auth/signup')
   async signup(@Body() createAccount: CreateUserDto) {
     return {
       username: createAccount.username,
@@ -32,7 +32,7 @@ export class AuthController {
     };
   }
 
-  @Post('cookies')
+  @Post('auth/cookies')
   async setCookies(@Body() loginData: LoginUserDto, @Res() res: Response) {
     const token = (await this.authService.login(loginData)).access_token;
     // Set cookie
@@ -44,7 +44,7 @@ export class AuthController {
     res.status(200).json({ message: 'Login successful' });
   }
 
-  @Get('logout')
+  @Get('auth/logout')
   async logout(@Res() res: Response) {
     res.clearCookie('authToken', {
       httpOnly: true,

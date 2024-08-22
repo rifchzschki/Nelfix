@@ -1,3 +1,20 @@
+// Handle Logout
+document
+  .getElementById("logout-button")
+  .addEventListener("click", async (e) => {
+    e.preventDefault();
+    const response = await fetch("/auth/logout", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      window.location.href = "/";
+    } else {
+      alert("Logout gagal!");
+    }
+  });
 document.addEventListener("DOMContentLoaded", function () {
   const components = document.querySelectorAll(".route-link");
   const noRedirect = document.getElementById("noRedirect");
@@ -30,21 +47,3 @@ document.getElementById("search-form").addEventListener("submit", function (e) {
     window.location.href = `/browse`;
   }
 });
-
-// Handle Logout
-document
-  .getElementById("logout-button")
-  .addEventListener("click", async (e) => {
-    e.preventDefault();
-    const response = await fetch("/auth/logout", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.ok) {
-      window.location.href = "/";
-    } else {
-      alert("Logout gagal!");
-    }
-  });

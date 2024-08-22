@@ -8,6 +8,10 @@ export class TransformResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map(data => {
+        if (data && data.status) {
+          // Jika sudah terbungkus, tidak perlu membungkus ulang
+          return data;
+        }
         // Mengubah format respons menjadi ResponseDto
         return {
           status: 'success',
